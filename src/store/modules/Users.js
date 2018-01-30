@@ -1,9 +1,6 @@
-import Immutable from 'immutable';
 const ADD_USER = 'ADD_USER';
 
-const initialState = Immutable.fromJS({
-    list: []
-});
+const initialState = [];
 
 const addUserAction = (user) => ({
     type: ADD_USER,
@@ -17,7 +14,7 @@ export const actions = {
 const usersReducer = (state = initialState, action) => {
     switch(action.type) {
         case ADD_USER:
-            return state.update('list', list => list.push(action.value));
+            return [...state, action.value];
         default:
             return state;
     }

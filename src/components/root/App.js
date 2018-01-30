@@ -1,11 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, SyntheticEvent } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import User from '../atoms/User';
 import { actions as UserActions } from '../../store/modules/Users';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
+type Props = {
+  user: Object
+}
+
+class App extends Component<Props> {
+  
   componentWillMount() {
     this.props.addUser({
       name: 'Sagar',
@@ -16,17 +22,32 @@ class App extends Component {
       age: 38
     });
   }
+
+  handleClick = (event: SyntheticEvent<HTMLButtonElement>, user: Object) => {
+    console.log(event.currentTarget);
+    console.log(user);
+    this.props.addUser({
+      name: 'Sandy',
+      age: 38
+    });
+  }
+
   render() {
     console.log(this.props.users);
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          React App + Flow
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        { 
+          this.props.users.map(user => {
+            return (
+              <User key={user.name}
+                    user={user} 
+                    handleClick={this.handleClick} />
+            )
+          })
+        }
       </div>
     );
   }
@@ -34,9 +55,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   const { users } = state;
-  console.log(users);
   return {
-    users: users.toJS()
+    users
   };
 
 }
